@@ -1,0 +1,5 @@
+Log file created at: 2019/03/10 09:53:22
+Running on machine: localhost.localdomain
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0310 09:53:22.579491 46241 index.cc:33] Index Build
+I0310 09:53:45.689692 46241 index.cc:54] Index Build Done
