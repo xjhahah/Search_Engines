@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+message Hello
+{
+  required string name = 1;  //字段的描述，表示该字段在序列化和反序列化时必须存在，=1 表示序号
+  required int32 score = 2;  //表示32位的整数
+};
