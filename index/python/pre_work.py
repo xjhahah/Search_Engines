@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding:utf-8
 '''
 使用 Python 对所有的 html 的文档进行预处理.
 主要目的有两个:
@@ -12,68 +12,67 @@
         b) title, 解析 html, 里面的 title 标签包含着
         c) content, 对 html 内容进行去标签. 也需要把所有的换行去掉
 '''
-import codecs
 import os
 import re
 from bs4 import BeautifulSoup
-from soupsieve.util import string
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 input_path = '../data/input/boost_1_70_0'
 output_path = '../data/tmp/raw_input'
-# url_prefix = 'https://www.boost.org/doc/libs/1_53_0/doc/'
 url_prefix = 'https://www.boost.org/doc/libs/1_70_0/'
 
 
 def filter_tags(htmlstr):
-    # 先过滤CDATA
-    re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)  # 匹配CDATA
-    re_script = re.compile('<\s*script[^>]*>[^<]*<\s*/\s*script\s*>', re.I)  # Script
-    re_style = re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>', re.I)  # style
-    re_br = re.compile('<br\s*?/?>')  # 处理换行
-    re_h = re.compile('</?\w+[^>]*>')  # HTML标签
-    re_comment = re.compile('<!--[^>]*-->')  # HTML注释
-    s = re_cdata.sub('', htmlstr)  # 去掉CDATA
-    s = re_script.sub('', s)  # 去掉SCRIPT
-    s = re_style.sub('', s)  # 去掉style
+    #先过滤CDATA
+    re_cdata=re.compile('//<!\[CDATA\[[^>]*//\]\]>',re.I) #匹配CDATA
+    re_script=re.compile('<\s*script[^>]*>[^<]*<\s*/\s*script\s*>',re.I)#Script
+    re_style=re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>',re.I)#style
+    re_br=re.compile('<br\s*?/?>')#处理换行
+    re_h=re.compile('</?\w+[^>]*>')#HTML标签
+    re_comment=re.compile('<!--[^>]*-->')#HTML注释
+    s=re_cdata.sub('',htmlstr)#去掉CDATA
+    s=re_script.sub('',s) #去掉SCRIPT
+    s=re_style.sub('',s)#去掉style
 
     # [注意!!] 把 br 替换成 空格
-    s = re_br.sub(' ', s)
+    s=re_br.sub(' ',s)
 
-    s = re_h.sub('', s)  # 去掉HTML 标签
-    s = re_comment.sub('', s)  # 去掉HTML注释
-    # 去掉多余的空行
-    blank_line = re.compile('\n+')
+    s=re_h.sub('',s) #去掉HTML 标签
+    s=re_comment.sub('',s)#去掉HTML注释
+    #去掉多余的空行
+    blank_line=re.compile('\n+')
 
     # [注意] 此处把多个换行替换成一个空格
-    s = blank_line.sub(' ', s)
+    s=blank_line.sub(' ',s)
 
-    s = replaceCharEntity(s)  # 替换实体
+    s=replaceCharEntity(s)#替换实体
     return s
 
-
 ##替换常用HTML字符实体.
-# 使用正常的字符替换HTML中特殊的字符实体.
-# 你可以添加新的实体字符到CHAR_ENTITIES中,处理更多HTML字符实体.
-# @param htmlstr HTML字符串.
+#使用正常的字符替换HTML中特殊的字符实体.
+#你可以添加新的实体字符到CHAR_ENTITIES中,处理更多HTML字符实体.
+#@param htmlstr HTML字符串.
 def replaceCharEntity(htmlstr):
-    CHAR_ENTITIES = {'nbsp': ' ', '160': ' ',
-                     'lt': '<', '60': '<',
-                     'gt': '>', '62': '>',
-                     'amp': '&', '38': '&',
-                     'quot': '"', '34': '"', }
+    CHAR_ENTITIES={'nbsp':' ','160':' ',
+                   'lt':'<','60':'<',
+                   'gt':'>','62':'>',
+                   'amp':'&','38':'&',
+                   'quot':'"','34':'"',}
 
-    re_charEntity = re.compile(r'&#?(?P<name>\w+);')
-    sz = re_charEntity.search(htmlstr)
+    re_charEntity=re.compile(r'&#?(?P<name>\w+);')
+    sz=re_charEntity.search(htmlstr)
     while sz:
-        entity = sz.group()  # entity全称，如&gt;
-        key = sz.group('name')  # 去除&;后entity,如&gt;为gt
+        entity=sz.group()#entity全称，如&gt;
+        key=sz.group('name')#去除&;后entity,如&gt;为gt
         try:
-            htmlstr = re_charEntity.sub(CHAR_ENTITIES[key], htmlstr, 1)
-            sz = re_charEntity.search(htmlstr)
+            htmlstr=re_charEntity.sub(CHAR_ENTITIES[key],htmlstr,1)
+            sz=re_charEntity.search(htmlstr)
         except KeyError:
-            # 以空串代替
-            htmlstr = re_charEntity.sub('', htmlstr, 1)
-            sz = re_charEntity.search(htmlstr)
+            #以空串代替
+            htmlstr=re_charEntity.sub('',htmlstr,1)
+            sz=re_charEntity.search(htmlstr)
     return htmlstr
 
 
@@ -99,20 +98,14 @@ def parse_url(path):
     ../data/input/html/about.html
 
     url_prefix 的格式形如
-    https://www.boost.org/doc/libs/1_70_0/
+    https://www.boost.org/doc/libs/1_70_0/doc/
     '''
     return url_prefix + path[len(input_path):]
 
 
 def parse_title(html):
     soup = BeautifulSoup(html, 'html.parser')
-    # return soup.find('title').string
-    title = soup.find('title')
-    if title != None:
-        title = string(title)
-        return title[7:len(title) - 8]
-    else:
-        return 'not title'
+    return soup.find('title').string
 
 
 def parse_content(html):
@@ -128,8 +121,7 @@ def parse_file(path):
     解析 html 文件, 获取到其中 jump_url, title, content
     返回一个三元组
     '''
-    file = open(path, 'r', encoding='utf-8', errors='ignore')
-    html = file.read()
+    html = open(path).read()
     return parse_url(path), parse_title(html), parse_content(html)
 
 
@@ -147,26 +139,20 @@ def run():
     # 1. 遍历目录下的所有 html 文件
     # file_list 是一个列表, 里面的每个元素都是一个文件路径
     file_list = enum_files(input_path)
-    print(len(file_list))
-    count = 0
-    with open(output_path, 'w', encoding='utf-8') as output_fd:
+    with open(output_path, 'w') as output_fd:
         # 2. 针对每一个 html 文件, 进行解析, 获取到其中的jump_url, title, content
         for f in file_list:
             # parse_file 返回结果预期就是一个三元组.
             # jump_url, 标题, 正文
             result = parse_file(f)
             # 3. 把结果写入到输出文件中
-            if result[1] != None and len(result[0])!=0 and len(result[1])!=0 and len(result[2])!=0:
-                count += 1
+            if result[0] and result[1] and result[2]:
                 write_result(result, output_fd)
-            else:
-                print(result[0],":",result[1],":",result[2])
-    print(count)
 
 
 def test1():
     file_list = enum_files(input_path)
-    print(len(file_list))
+    print(file_list)
 
 
 def test2():
@@ -179,3 +165,12 @@ if __name__ == '__main__':
     run()
     # test1()
     # test2()
+
+
+
+
+
+
+
+
+
