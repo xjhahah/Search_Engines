@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"> 
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+		<title>Home</title>
+		<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="js/jquery.min.js"></script>
+		
+		 <!-- Custom Theme files -->
+		<link href="css/style.css" rel='stylesheet' type='text/css' />
+   		 <!-- Custom Theme files -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+		</script>
+		<!----start-top-nav-script---->
+		<script>
+			$(function() {
+				var pull 		= $('#pull');
+					menu 		= $('nav ul');
+					menuHeight	= menu.height();
+				$(pull).on('click', function(e) {
+					e.preventDefault();
+					menu.slideToggle();
+				});
+				$(window).resize(function(){
+	        		var w = $(window).width();
+	        		if(w > 320 && menu.is(':hidden')) {
+	        			menu.removeAttr('style');
+	        		}
+	    		});
+			});
+		</script>
+		<!----//End-top-nav-script---->
+	</head>
+	<body>
+		<!----- start-header---->
+			
+			<!----- //End-header---->
+			<!----- banner ------>
+			<div class="banner">
+				<div class="container">
+					<div class="banner-info text-center">
+						<h1>Just a Proffesional Web Hosting Services</h1>
+						<h2>modern  -  fast  -  reliable</h2>
+						
+						<!-- domain-Serach-bar -->
+						<div class="domain-Serach-bar">
+							<form>
+							<div class="domain-Serach-bar-grids">
+								<div class="domain-Serach-bar-left">
+									<input type="text" class="text" value="boost" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'boost';}">
+								</div>
+								<div class="domain-Serach-bar-right">
+									<input type="submit" value="BT一下" />	
+								</div>
+							</form>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+						<!----- domain-Serach-bar ----->
+					</div>
+				</div>
+			</div>
+			<!----- banner ------>
+			<!------ services ----->
+			
+			<!------ services ----->
+			<!------ Features ------>
+			
+			<!------ Features ------>
+			<!----- clients ----->
+			<!--<div class="clients">
+				<div class="container">
+
+				<!----- copy-right ----->
+			<!--</div>-->
+			<!----- footer ----->
+			<!---smoth-scrlling---->
+							<script type="text/javascript">
+									$(document).ready(function(){
+									$('a[href^="#"]').on('click',function (e) {
+									    e.preventDefault();
+									    var target = this.hash,
+									    $target = $(target);
+									    $('html, body').stop().animate({
+									        'scrollTop': $target.offset().top
+									    }, 1000, 'swing', function () {
+									        window.location.hash = target;
+									    });
+									});
+								});
+							</script>
+					<!---//smoth-scrlling---->
+	
+</body>
+</html>
+
